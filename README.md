@@ -1,6 +1,6 @@
-# CarShield AI | CAN Bus Anomaly Detection
+# GhostShield | CAN Bus Anomaly Detection
 
-CarShield AI learns what normal vehicle traffic looks like on a Controller Area Network (CAN) bus. A neural network called an autoencoder compresses each CAN message into four numbers and tries to reconstruct the original features. The mean squared difference between the input and reconstruction gives each message an anomaly score. A higher score means the message was harder for the model to reconstruct.
+GhostShield learns what normal vehicle traffic looks like on a Controller Area Network (CAN) bus. A neural network called an autoencoder compresses each CAN message into four numbers and tries to reconstruct the original features. The mean squared difference between the input and reconstruction gives each message an anomaly score. A higher score means the message was harder for the model to reconstruct.
 
 The tuned model reduced reconstruction error on held-out normal traffic by **73.5%**. Attack detection is the next evaluation step. The notebooks include labeled test data, but report no detection threshold, precision, recall, or F1 score.
 
