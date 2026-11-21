@@ -1,0 +1,13 @@
+import {readFileSync} from 'node:fs';
+import assert from 'node:assert/strict';
+import {loadInference,verifyParity} from '../site/assets/inference.js';
+const read=p=>JSON.parse(readFileSync(new URL(p,import.meta.url)));
+const model=read('../site/assets/model.json');
+const refs=read('./reference.json');
+const summary=verifyParity(loadInference(model),refs,model.threshold);
+console.log(JSON.stringify(summary,null,2));
+assert(summary.n>=1000 && summary.sources.length===5);
+assert(summary.closest<1e-5);
+assert(summary.maxReconstruction<=5e-7);
+assert(summary.maxMse<=1e-7);
+assert.equal(summary.disagreements.length,0);
