@@ -16,4 +16,6 @@ GhostShield evaluates an autoencoder that assigns a reconstruction error to alre
 
 The final model reduced normal-validation reconstruction error. At the calibrated thresholds, the temporal baseline had higher F1 and fewer false alarms on the same attack recordings.
 
+The [Car-Hacking Dataset](https://www.kaggle.com/datasets/pranavjha24/car-hacking-dataset) includes one normal driving capture and four labeled attack recordings (DoS, Fuzzy, Gear Spoofing, and RPM Spoofing). The normal capture was split in order into 791,096 training and 197,775 validation messages. Preprocessing fits the MinMax scaler on training data and applies it to validation and test data.
+
 The earlier root-level [`best_ae.keras`](best_ae.keras) uses 10 inputs (CAN ID, DLC, and eight payload bytes). Its tuning results are documented in the [historical README](https://github.com/muhannadanwar2002-tech/smarterDrive/blob/0498ec7/README.md). The final [temporal E09](GhostShield/models/best_ae_time_12features.keras) uses 12 inputs, adding two timing features. Despite sharing the E09 label, these are separate experiments with different input schemas.
