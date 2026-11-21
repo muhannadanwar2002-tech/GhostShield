@@ -1,0 +1,8 @@
+{
+  "model_filename": "time_autoencoder.keras",
+  "validation_filename": "validation_scaled_time.parquet",
+  "method": "normal_validation_percentile",
+  "percentile": 99,
+  "threshold": 0.08482694241401553,
+  "classification_rule": "attack if reconstruction_mse > threshold"
+}

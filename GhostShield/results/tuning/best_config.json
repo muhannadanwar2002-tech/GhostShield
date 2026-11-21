@@ -1,0 +1,17 @@
+{
+  "experiment_id": "E09",
+  "architecture": "16-8-4-8-16",
+  "learning_rate": 0.001,
+  "batch_size": 512,
+  "regularization": "EarlyStopping",
+  "early_stopping": {
+    "monitor": "val_loss",
+    "patience": 10,
+    "min_delta": 1e-05
+  },
+  "epochs_run": 184,
+  "val_loss": 0.0013439235044643283,
+  "baseline_val_loss": 0.011401691474020481,
+  "selection_rule": "lowest val_loss; simplest model if within 2%",
+  "seed": 42
+}
