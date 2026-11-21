@@ -10,6 +10,8 @@
 ## Browser and provenance checks
 
 - The data audit compared all 689 public replay/example entries to their original Parquet row, feature order, values, and ground truth. Each attack replay contains normal and injected rows.
-- Playwright with installed macOS Chrome verified 1920×1080, 1440×900, 1280×800 and 390×844. It exercised replay playback, pause, speed, step, reset, switching recordings and modes, chart rendering, matching counts, manual input, and navigation to the presentation integration route. It checked model load failure and verified the JavaScript port against the Keras fixtures in Chrome.
+- Playwright with installed macOS Chrome verified 1920×1080, 1440×900, 1280×800 and 390×844. It exercised replay playback, pause, speed, step, reset, switching recordings and modes, chart rendering, matching counts, manual input, and return navigation from the demo to Home. It checked model load failure and verified the JavaScript port against the Keras fixtures in Chrome.
 - The static server was tested on loopback at the same /GhostShield/ base as Pages. The offline launcher independently started an available port and served the demo route.
-- Safari WebDriver could not open a session because Allow Remote Automation is disabled. The original cinematic presentation was unavailable; only the integration route was tested. Public Pages deployment was not tested before review.
+- Safari WebDriver could not open a session because Allow Remote Automation is disabled. The original cinematic presentation was unavailable; its 14 scenes and Scene 12 handoff were not tested. Public Pages deployment was not tested before review.
+
+The dashboard reads the official 16,569,475-row results and displays the exact threshold from the E09 asset. It does not report a confidence percentage, vehicle ID, bitrate, or fabricated timing. The placeholder presentation route and its navigation links have been removed pending delivery of the original files.

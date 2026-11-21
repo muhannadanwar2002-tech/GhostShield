@@ -1,5 +1,5 @@
 <!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>GhostShield | تجربة النموذج</title><link rel="stylesheet" href="../assets/style.css"><script type="module" src="../assets/app.js"></script></head><body>
-<header><a class="brand" href="../" dir="ltr">GHOSTSHIELD</a><nav><a href="../">الرئيسية</a><a href="../presentation/" id="return">العرض ثلاثي الأبعاد</a></nav></header>
+<header><a class="brand" href="../" dir="ltr">GHOSTSHIELD</a><nav><a href="../" id="return">العودة إلى الرئيسية</a></nav></header>
 <main>
 <section class="intro"><h1>مراقبة رسائل <bdi>CAN</bdi></h1><p>استدلال النموذج <bdi>E09</bdi> داخل المتصفح على رسائل مسجّلة. تسجيل الهجوم قد يحتوي أيضًا على رسائل طبيعية.</p><progress id="load" aria-label="تحميل النموذج والبيانات" max="3" value="0"></progress><p id="notice" role="status"></p></section>
 <div class="instrument">
@@ -11,7 +11,7 @@
 <p id="position" class="num note">0 / 0</p><p id="mode-note" class="muted"></p></div></section>
 <section class="panel"><h2>خطأ إعادة البناء <bdi>(MSE)</bdi></h2><div class="inside"><canvas id="chart" role="img" aria-label="خطأ إعادة البناء لكل رسالة معالجة مقابل عتبة الكشف"></canvas><div class="legend"><span class="dot">خطأ محسوب من النموذج</span><span class="threshold">عتبة الكشف الثابتة</span><span>المحور الأفقي: رقم الرسالة في العينة</span></div></div></section>
 <section class="panel state"><h2>حالة الكشف</h2><div class="inside"><strong id="classification" class="status" aria-live="polite">بانتظار رسالة</strong>
-<div class="value">خطأ حالي <b id="mse" class="num">—</b></div><div class="value">العتبة <b id="threshold" class="num">—</b></div><div class="value">التسمية الأصلية <b id="truth">—</b></div><p id="mismatch" class="note" role="status"></p></div></section>
+<div class="value">خطأ حالي <b id="mse" class="num">—</b></div><div class="value threshold-value"><span>العتبة الثابتة</span><b id="threshold" class="num">—</b></div><div class="value">التسمية الأصلية <b id="truth">—</b></div><p id="mismatch" class="note" role="status"></p><small class="model-note">القرار مبني على خطأ إعادة البناء، وهو ليس احتمالًا للهجوم.</small></div></section>
 </div>
 <div class="lower">
 <section class="panel"><h2>أحدث رسائل <bdi>CAN</bdi></h2><div class="scroll"><table><thead><tr><th>صف المصدر</th><th>التسجيل</th><th>الحقيقة</th><th>التنبؤ</th><th>MSE</th><th>التطابق</th></tr></thead><tbody id="rows"></tbody></table></div></section>

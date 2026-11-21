@@ -107,12 +107,12 @@ async function initialize(){
     const official=await read('metrics.json');$('load').value=3;
     infer(samples.replay.normal[0].x);
     threshold=model.threshold;predict=infer;
-    $('threshold').textContent=threshold.toPrecision(10);$('features').textContent=model.features.join(', ');
+    $('threshold').textContent=String(threshold);$('features').textContent=model.features.join(', ');
     for(const id of ['mode','source','speed','infer'])$(id).disabled=false;
     for(const [label,m] of [['الأساسي الزمني',official.baseline.pooled],['E09 المحسّن',official.tuned.pooled]]){
       cells($('official'),[label,...['accuracy','precision','recall','f1','fpr'].map(k=>pct(m[k])),m.roc_auc.toFixed(4)]);
     }
-    $('official-summary').textContent='تقييم سابق مستقل عن هذه العينة: '+official.tuned.pooled.n.toLocaleString('en')+' رسالة. النموذج الأساسي حقق F1 أعلى وإنذارات خاطئة أقل.';
+    $('official-summary').textContent='تقييم سابق على '+official.tuned.pooled.n.toLocaleString('en')+' رسالة اختبار. النموذج الأساسي حقق F1 أعلى وإنذارات خاطئة أقل.';
     $('per-attack').textContent='استدعاء E09 حسب الهجوم: '+['dos','fuzzy','gear','rpm'].map(k=>labels[k]+' '+pct(official.tuned[k].recall)).join(' · ');
     $('load').hidden=true;reset();
   }catch(error){

@@ -17,6 +17,10 @@ try{
     await page.getByRole('link',{name:'جرّب النموذج الحقيقي'}).click();
     await page.waitForFunction(()=>!document.querySelector('#next').disabled);
     assert.equal(await page.locator('html').getAttribute('dir'),'rtl');
+    assert.equal(await page.locator('#threshold').textContent(),'0.017968580495137495');
+    assert.match(await page.locator('#official-summary').textContent(),/16,569,475/);
+    assert.match(await page.locator('#official').textContent(),/35.87%/);
+    assert.equal(await page.locator('a[href*="presentation/"]').count(),0);
     const parity=await page.evaluate(async records=>{
       const {loadInference,verifyParity}=await import('../assets/inference.js');
       const model=await (await fetch('../assets/model.json')).json();
@@ -65,10 +69,10 @@ try{
       await page.screenshot({path:process.env.SCREENSHOT_DIR+'/'+viewport.width+'.png'});
     }
     await page.click('#return');
-    assert.equal(new URL(page.url()).pathname,new URL('presentation/',base).pathname);
+    assert.equal(new URL(page.url()).pathname,base.pathname);
     await page.close();
     assert.deepEqual(errors,[]);assert.deepEqual(bad,[]);
-    console.log(viewport,JSON.stringify(parity),'controls, counts, chart, manual input and presentation hook passed');
+    console.log(viewport,JSON.stringify(parity),'controls, counts, chart, manual input and return home passed');
   }
   const failure=await browser.newPage();
   await failure.route('**/assets/model.json', route=>route.fulfill({status:503}));

@@ -10,10 +10,15 @@ From this directory run `./run_demo.sh` using Python 3. The launcher prints an a
 
 - Home: `./`
 - Demo: `./demo/`
-- Presentation integration: `./presentation/`
 - Weights, compact samples, and offline evaluation metrics: `./assets/`
 
-The final cinematic presentation was not available in the inspected workspace. The presentation route states this and links to the real demo in a new tab. When the original presentation is available, place its existing assets under `site/presentation/` and add a `<a href="../demo/" target="_blank" rel="noopener">Try GhostShield</a>` in the protection scene. A new tab lets the original presentation remain open at the same scene. This behavior still needs testing with the actual presentation.
+## Pending presentation integration
+
+The current static package exposes Home and the verified demo only. It has no presentation placeholder or dead navigation link.
+
+Provide the authoritative Claude-generated `GhostShield_Presentation_Final/` directory or ZIP, including `GhostShield_Standalone.html`, `index.html`, all Three.js/CSS/JavaScript and 3D/media assets with their original relative paths, and the Arabic presenter guide and speaker notes. No older CarShield presentation should be substituted.
+
+After delivery, stage the original presentation at `site/presentation/` and wire Scene 12 to `../demo/` using a new tab and `rel="noopener"`. Add the presentation link to Home and a return link from the demo. Verify the original tab preserves the current scene when returning and that all 14 scenes, presenter assignments, controls, notes, animations and assets work both online and offline. Only enable those public links after testing the real presentation.
 
 ## Inference and data
 
