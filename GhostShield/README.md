@@ -34,8 +34,8 @@ errors. Full-precision metrics and the threshold are in `results/tuned/`.
 
 ## Files and setup
 
-- `CarShield_AI_Colab_Final.ipynb` displays the saved tables and figures on open.
-- `CarShield_AI_Colab.ipynb` integrates all five stages and inference.
+- `GhostShield_Colab_Final.ipynb` displays the saved tables and figures on open.
+- `GhostShield_Colab.ipynb` integrates all five stages and inference.
 - `notebooks/` contains unchanged team notebook copies, including executed tuning and evaluation.
 - `models/` contains the original models and a verified HDF5 export of E09.
 - `results/` contains measured metrics, tuning settings, comparison CSVs and figures.
@@ -99,7 +99,7 @@ tuning, and the hosted Colab runtime were outside this integration test.
    `CarShield_AI_Final_Submission`. Prepare the dataset layout above. The
    model files must remain under `models/`, and both `results/baseline/` and
    `results/tuned/` must remain in the submission.
-2. Open `CarShield_AI_Colab.ipynb` in Colab. Use a **CPU** runtime.
+2. Open `GhostShield_Colab.ipynb` in Colab. Use a **CPU** runtime.
    For the closest match to the local Python 3.12 test, select runtime version
    **2026.07** if it is available. Leave `RUN_RAW_EDA = True`,
    `TRAIN_BASELINES = False`, and `RUN_TUNING = False`.

@@ -2,7 +2,7 @@
 
 GhostShield evaluates an autoencoder that assigns a reconstruction error to already scaled CAN messages. The final submission uses the tuned 12-feature temporal E09 and a fixed threshold calibrated on normal validation data.
 
-- [Final Colab notebook with saved results](GhostShield/CarShield_AI_Colab_Final.ipynb)
+- [Final Colab notebook with saved results](GhostShield/GhostShield_Colab_Final.ipynb)
 - [Setup, data sources, inference and model documentation](GhostShield/README.md)
 - [Measured E09 results](GhostShield/results/tuned/evaluation_metrics.json) and [comparison with the 12-feature temporal baseline](GhostShield/results/tuned/baseline_vs_tuned.csv)
 
