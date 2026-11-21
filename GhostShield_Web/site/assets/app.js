@@ -1,11 +1,18 @@
 import {loadInference} from './inference.js';
+import {format} from './format.js';
 const $=id=>document.getElementById(id);
 const labels={normal:'حركة طبيعية',dos:'DoS',fuzzy:'Fuzzy',gear:'Gear Spoofing',rpm:'RPM Spoofing'};
-const statLabels={total:'رسائل معالجة',anomalies:'شذوذ مكتشف',tp:'هجوم مكتشف TP',tn:'طبيعي صحيح TN',fp:'إنذار خاطئ FP',fn:'هجوم فائت FN'};
-const pct=n=>new Intl.NumberFormat('en',{style:'percent',minimumFractionDigits:2,maximumFractionDigits:2}).format(n);
+const statLabels={total:'رسائل معالجة',anomalies:'شذوذ مكتشف',tp:'True Positive',tn:'True Negative',fp:'False Positive',fn:'False Negative'};
+const isolate=value=>{
+  const b=document.createElement('bdi');b.textContent=value;return b;
+};
+const exactDisplay=(element,value,formatted)=>{
+  element.textContent=formatted;element.title=String(value);
+};
+const mixed=(element,...parts)=>element.replaceChildren(...parts);
 const cells=(parent,values)=>{
   const tr=document.createElement('tr');
-  for(const value of values){const td=document.createElement('td');const b=document.createElement('bdi');b.textContent=value;td.append(b);tr.append(td);}
+  for(const value of values){const td=document.createElement('td');td.append(isolate(value));tr.append(td);}
   parent.append(tr);return tr;
 };
 let predict, samples, threshold, records=[], history=[], counts={}, timer=null, playing=false;
@@ -14,7 +21,7 @@ const busy=()=>history.length>=records.length;
 const controls=()=>{
   $('start').disabled=!predict||playing||busy(); $('pause').disabled=!playing;
   $('next').disabled=!predict||playing||busy(); $('reset').disabled=!predict;
-  $('position').textContent=history.length+' / '+records.length;
+  $('position').textContent=format.index(history.length)+' / '+format.index(records.length);
 };
 function pause(){
   playing=false; clearTimeout(timer); timer=null; controls();
@@ -22,7 +29,7 @@ function pause(){
 function reset(){
   pause(); records=samples?.[$('mode').value]?.[$('source').value]||[];
   history=[]; counts=Object.fromEntries(Object.keys(statLabels).map(k=>[k,0]));
-  $('rows').replaceChildren(); $('mse').textContent='—'; $('truth').textContent='—';
+  $('rows').replaceChildren(); $('mse').textContent='—'; $('mse').removeAttribute('title'); $('truth').textContent='—';
   $('classification').textContent='بانتظار رسالة'; $('classification').dataset.alarm='false'; $('mismatch').textContent='';
   $('mode-note').textContent=$('mode').value==='replay'?'مقطع متصل بترتيبه الأصلي.':'عينات طبقية من تسجيل واحد، وليست تسلسلًا زمنيًا أو عينة ممثّلة.';
   $('notice').textContent=records.length?'النموذج جاهز · الحساب محلي': 'لا توجد رسائل صالحة لهذا الاختيار.';
@@ -31,7 +38,7 @@ function reset(){
 function paintCounts(){
   $('counts').replaceChildren(...Object.entries(statLabels).map(([k,label])=>{
     const card=document.createElement('div');const number=document.createElement('strong');
-    number.dataset.metric=k;number.textContent=counts[k];card.append(number,label);return card;
+    number.dataset.metric=k;number.textContent=format.count(counts[k]);card.append(number,isolate(label));return card;
   }));
 }
 function draw(){
@@ -46,10 +53,10 @@ function draw(){
   ctx.font='11px monospace';ctx.fillStyle='#a8c3cc';ctx.strokeStyle='#294d57';
   for(let i=0;i<=5;i++){
     const yy=y(top*i/5);ctx.beginPath();ctx.moveTo(x(0),yy);ctx.lineTo(x(records.length-1),yy);ctx.stroke();
-    ctx.fillText((top*i/5).toFixed(4),4,yy+3);
+    ctx.fillText(format.error(top*i/5),4,yy+3);
     if(records.length){const j=Math.round((records.length-1)*i/5);const xx=x(j);
       ctx.beginPath();ctx.moveTo(xx,margin.top);ctx.lineTo(xx,margin.top+height);ctx.stroke();
-      ctx.fillText(j+1,xx-5,h-8);}
+      ctx.fillText(format.index(j+1),xx-5,h-8);}
   }
   if(threshold){ctx.strokeStyle='#ff9483';ctx.setLineDash([5,5]);ctx.beginPath();ctx.moveTo(x(0),y(threshold));ctx.lineTo(margin.left+width,y(threshold));ctx.stroke();ctx.setLineDash([]);}
   if(history.length){
@@ -65,13 +72,14 @@ function step(){
     const wrong=p.attack!==truth;
     history.push(p);counts.total++;counts.anomalies+=Number(p.attack);
     counts[p.attack?(truth?'tp':'fp'):(truth?'fn':'tn')]++;
-    $('classification').textContent=p.attack?'شذوذ مكتشف · Attack':'طبيعي · Normal';
+    mixed($('classification'),isolate(attackText(p.attack)));
     $('classification').dataset.alarm=String(p.attack);
-    $('mse').textContent=p.mse.toPrecision(8);$('truth').textContent=r.label+' · '+attackText(truth);
-    $('mismatch').textContent=wrong?(truth?'هجوم فائت: رسالة محقونة صُنّفت طبيعية.':'إنذار خاطئ: رسالة طبيعية صُنّفت كهجوم.'):'التنبؤ يطابق التسمية المسجّلة.';
+    exactDisplay($('mse'),p.mse,format.error(p.mse));$('truth').textContent=r.label+' · '+attackText(truth);
+    if(wrong) mixed($('mismatch'),isolate(truth?'False Negative':'False Positive'),truth?' — رسالة محقونة صُنّفت طبيعية.':' — رسالة طبيعية صُنّفت كهجوم.');
+    else mixed($('mismatch'),'النتيجة تطابق ',isolate('Ground Truth'),'.');
     $('mismatch').classList.toggle('warn',wrong);
-    const row=cells($('rows'),[r.row,labels[r.source],r.label+' · '+attackText(truth),attackText(p.attack),p.mse.toPrecision(6),wrong?'غير مطابق':'مطابق']);
-    row.dataset.wrong=String(wrong);$('rows').prepend(row);
+    const row=cells($('rows'),[format.index(r.row),labels[r.source],r.label+' · '+attackText(truth),attackText(p.attack),format.error(p.mse),wrong?'غير مطابق':'مطابق']);
+    row.children[4].title=String(p.mse);row.dataset.wrong=String(wrong);$('rows').prepend(row);
     if($('rows').children.length>8)$('rows').lastChild.remove();
     paintCounts();draw();if(busy())pause();else controls();
   }catch(error){pause();$('notice').textContent='تعذر حساب الرسالة: '+error.message;}
@@ -90,7 +98,8 @@ $('infer').onclick=()=>{
     const fields=$('manual').value.split(',').map(x=>x.trim());
     if(fields.some(x=>!x))throw new Error();
     const result=predict(fields.map(Number));
-    $('manual-result').textContent=attackText(result.attack)+' · MSE '+result.mse.toPrecision(8);
+    const mse=isolate(format.error(result.mse));mse.title=String(result.mse);
+    mixed($('manual-result'),isolate(attackText(result.attack)),' · ',isolate('MSE'),' ',mse);
   }catch{$('manual-result').textContent='أدخل 12 قيمة رقمية منتهية، مفصولة بفواصل.';}
 };
 window.addEventListener('resize',draw);
@@ -107,13 +116,14 @@ async function initialize(){
     const official=await read('metrics.json');$('load').value=3;
     infer(samples.replay.normal[0].x);
     threshold=model.threshold;predict=infer;
-    $('threshold').textContent=String(threshold);$('features').textContent=model.features.join(', ');
+    exactDisplay($('threshold'),threshold,format.threshold(threshold));$('features').textContent=model.features.join(', ');
     for(const id of ['mode','source','speed','infer'])$(id).disabled=false;
     for(const [label,m] of [['الأساسي الزمني',official.baseline.pooled],['E09 المحسّن',official.tuned.pooled]]){
-      cells($('official'),[label,...['accuracy','precision','recall','f1','fpr'].map(k=>pct(m[k])),m.roc_auc.toFixed(4)]);
+      cells($('official'),[label,...['accuracy','precision','recall','f1','fpr'].map(k=>format.percent(m[k])),format.rocAuc(m.roc_auc)]);
     }
-    $('official-summary').textContent='تقييم سابق على '+official.tuned.pooled.n.toLocaleString('en')+' رسالة اختبار. النموذج الأساسي حقق F1 أعلى وإنذارات خاطئة أقل.';
-    $('per-attack').textContent='استدعاء E09 حسب الهجوم: '+['dos','fuzzy','gear','rpm'].map(k=>labels[k]+' '+pct(official.tuned[k].recall)).join(' · ');
+    const total=isolate(format.count(official.tuned.pooled.n));total.title=String(official.tuned.pooled.n);
+    mixed($('official-summary'),'تقييم سابق على ',total,' رسالة من ',isolate('Test Dataset'),'. النموذج الأساسي حقق ',isolate('F1-Score'),' أعلى و',isolate('False Positive Rate'),' أقل.');
+    mixed($('per-attack'),isolate('Recall'),' لنموذج ',isolate('E09'),' حسب الهجوم: ',...['dos','fuzzy','gear','rpm'].flatMap((k,i)=>[i?' · ':'',isolate(labels[k]+' '+format.percent(official.tuned[k].recall))]));
     $('load').hidden=true;reset();
   }catch(error){
     $('load').hidden=true;$('notice').textContent='فشل تحميل النموذج أو البيانات: '+error.message;

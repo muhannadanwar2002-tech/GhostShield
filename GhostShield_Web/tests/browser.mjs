@@ -17,8 +17,10 @@ try{
     await page.getByRole('link',{name:'جرّب النموذج الحقيقي'}).click();
     await page.waitForFunction(()=>!document.querySelector('#next').disabled);
     assert.equal(await page.locator('html').getAttribute('dir'),'rtl');
-    assert.equal(await page.locator('#threshold').textContent(),'0.017968580495137495');
-    assert.match(await page.locator('#official-summary').textContent(),/16,569,475/);
+    assert.equal(await page.locator('#threshold').textContent(),'0.01797');
+    assert.equal(await page.locator('#threshold').getAttribute('title'),'0.017968580495137495');
+    assert.equal(await page.locator('#official-summary bdi').first().getAttribute('title'),'16569475');
+    assert.match(await page.locator('#official-summary').textContent(),/16\.57M/);
     assert.match(await page.locator('#official').textContent(),/35.87%/);
     assert.equal(await page.locator('a[href*="presentation/"]').count(),0);
     const parity=await page.evaluate(async records=>{
