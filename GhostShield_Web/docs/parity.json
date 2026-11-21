@@ -1,0 +1,16 @@
+{
+  "n": 1326,
+  "sources": [
+    "normal",
+    "dos",
+    "fuzzy",
+    "gear",
+    "rpm"
+  ],
+  "maxReconstruction": 1.1920928955078125e-7,
+  "meanReconstruction": 8.392958667368452e-9,
+  "maxMse": 1.396589747321153e-8,
+  "closest": 0.000005166204830594351,
+  "disagreements": [],
+  "agreement": 1
+}

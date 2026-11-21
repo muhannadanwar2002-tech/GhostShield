@@ -1,0 +1,23 @@
+<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>GhostShield | تجربة النموذج</title><link rel="stylesheet" href="../assets/style.css"><script type="module" src="../assets/app.js"></script></head><body>
+<header><a class="brand" href="../" dir="ltr">GHOSTSHIELD</a><nav><a href="../" id="return">العودة إلى الرئيسية</a></nav></header>
+<main>
+<section class="intro"><h1>مراقبة رسائل <bdi>CAN</bdi></h1><p>استدلال النموذج <bdi>E09</bdi> داخل المتصفح على رسائل مسجّلة. تسجيل الهجوم قد يحتوي أيضًا على رسائل طبيعية.</p><progress id="load" aria-label="تحميل النموذج والبيانات" max="3" value="0"></progress><p id="notice" role="status"></p></section>
+<div class="instrument">
+<section class="panel controls"><h2>اختيار التسجيل</h2><div class="inside">
+<label>نوع العرض<select id="mode" disabled><option value="replay">إعادة تشغيل تسجيل</option><option value="examples">أمثلة منتقاة</option></select></label>
+<label>المصدر<select id="source" disabled><option value="normal">حركة طبيعية</option><option value="dos">DoS</option><option value="fuzzy">Fuzzy</option><option value="gear">Gear Spoofing</option><option value="rpm">RPM Spoofing</option></select></label>
+<label>السرعة<select id="speed" disabled><option value="1">1×</option><option value="2">2×</option><option value="4">4×</option></select></label>
+<div class="buttons"><button class="primary" id="start" disabled>تشغيل</button><button id="pause" disabled>إيقاف مؤقت</button><button id="next" disabled>الرسالة التالية</button><button id="reset" disabled>إعادة ضبط</button></div>
+<p id="position" class="num note">0 / 0</p><p id="mode-note" class="muted"></p></div></section>
+<section class="panel"><h2>خطأ إعادة البناء <bdi>(MSE)</bdi></h2><div class="inside"><canvas id="chart" role="img" aria-label="خطأ إعادة البناء لكل رسالة معالجة مقابل عتبة الكشف"></canvas><div class="legend"><span class="dot">خطأ محسوب من النموذج</span><span class="threshold">عتبة الكشف الثابتة</span><span>المحور الأفقي: رقم الرسالة في العينة</span></div></div></section>
+<section class="panel state"><h2>حالة الكشف</h2><div class="inside"><strong id="classification" class="status" aria-live="polite">بانتظار رسالة</strong>
+<div class="value">خطأ حالي <b id="mse" class="num">—</b></div><div class="value threshold-value"><span>العتبة الثابتة</span><b id="threshold" class="num">—</b></div><div class="value">التسمية الأصلية <b id="truth">—</b></div><p id="mismatch" class="note" role="status"></p><small class="model-note">القرار مبني على خطأ إعادة البناء، وهو ليس احتمالًا للهجوم.</small></div></section>
+</div>
+<div class="lower">
+<section class="panel"><h2>أحدث رسائل <bdi>CAN</bdi></h2><div class="scroll"><table><thead><tr><th>صف المصدر</th><th>التسجيل</th><th>الحقيقة</th><th>التنبؤ</th><th>MSE</th><th>التطابق</th></tr></thead><tbody id="rows"></tbody></table></div></section>
+<section class="panel"><h2>إحصاءات العينة الحالية</h2><div class="inside cards" id="counts"></div></section>
+</div>
+<details class="panel"><summary class="inside">إدخال يدوي للقيم المحجّمة</summary><div class="inside"><p>أدخل 12 رقمًا مفصولًا بفواصل وفق ترتيب النموذج. الإدخال ليس إطار CAN خامًا.</p><p dir="ltr" id="features"></p><textarea id="manual" rows="2" aria-label="الخصائص المحجمة" dir="ltr"></textarea><button id="infer" disabled>احسب التنبؤ</button><p role="status" id="manual-result"></p></div></details>
+<section class="panel wide"><h2>النتائج المنشورة على كامل الاختبار</h2><div class="inside"><p id="official-summary"></p><div class="scroll"><table><thead><tr><th>النموذج</th><th>Accuracy</th><th>Precision</th><th>Recall</th><th>F1</th><th>FPR</th><th>ROC-AUC</th></tr></thead><tbody id="official"></tbody></table></div><p id="per-attack" class="note"></p></div></section>
+<footer>هذه إعادة تشغيل لبيانات حقيقية واستدلال لنموذج بحثي. لا تقيس العينة الصغيرة أداء الاختبار الكامل، ولا نتصل بمركبة أو نمنع الهجمات.</footer>
+</main></body></html>

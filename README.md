@@ -19,3 +19,7 @@ The final model reduced normal-validation reconstruction error. At the calibrate
 The [Car-Hacking Dataset](https://www.kaggle.com/datasets/pranavjha24/car-hacking-dataset) includes one normal driving capture and four labeled attack recordings (DoS, Fuzzy, Gear Spoofing, and RPM Spoofing). The normal capture was split in order into 791,096 training and 197,775 validation messages. Preprocessing fits the MinMax scaler on training data and applies it to validation and test data.
 
 The earlier root-level [`best_ae.keras`](best_ae.keras) uses 10 inputs (CAN ID, DLC, and eight payload bytes). Its tuning results are documented in the [historical README](https://github.com/muhannadanwar2002-tech/smarterDrive/blob/0498ec7/README.md). The final [temporal E09](GhostShield/models/best_ae_time_12features.keras) uses 12 inputs, adding two timing features. Despite sharing the E09 label, these are separate experiments with different input schemas.
+
+## Interactive model demo
+
+See [GhostShield browser demo](GhostShield_Web/README.md) for the verified offline launcher and deployment instructions. The future Pages location is [GhostShield on GitHub Pages](https://muhannadanwar2002-tech.github.io/GhostShield/) once the owner enables the workflow and publishes it.
