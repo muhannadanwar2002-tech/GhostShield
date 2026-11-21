@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+.ipynb_checkpoints/
+data/
+team_inputs/
+pipeline_runs/
+*.parquet
+*.zip
+.DS_Store
+*.csv.gz
+.env

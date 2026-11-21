@@ -1,0 +1,16 @@
+ID,Architecture,LR,Batch,Regularization,Val Loss,Epochs,Params,Notes
+E01,8-4-8,0.001,256,None,0.011391912586987019,20,288,Reproduce baseline
+E02,8-4-8,0.001,256,EarlyStopping,0.00879056379199028,147,288,val_loss still falling at epoch 20 -> train longer
+E03,8-4-8,0.003,256,EarlyStopping,0.018337350338697433,33,288,Bigger LR: may learn faster
+E04,8-4-8,0.0003,256,EarlyStopping,0.009856930933892727,132,288,Smaller LR: slower but smoother learning
+E04b,8-4-8,0.002,256,EarlyStopping,0.010999562218785286,29,288,Between 0.001 and 0.003: faster but still stable
+E05,8-4-8,0.001,128,EarlyStopping,0.011048766784369946,58,288,"Smaller batch: more weight updates per epoch, may learn finer details"
+E06,8-4-8,0.001,512,EarlyStopping,0.007338616531342268,67,288,"Bigger batch: faster and smoother training, maybe similar loss"
+E07,6-4-6,0.001,512,EarlyStopping,0.011375106871128082,49,220,Narrower: 8-4-8 may be bigger than needed
+E08,16-4-16,0.001,512,EarlyStopping,0.0029491253662854433,137,560,Wider: more units may capture more patterns
+E09,16-8-4-8-16,0.001,512,EarlyStopping,0.0013439235044643283,184,768,Deeper: more gradual compression may help
+E09b,16-8-4-8-16,0.0003,512,EarlyStopping,0.0030679048504680395,124,768,Re-check LR on the best layers
+E10,16-8-4-8-16,0.001,512,ES + L2 0.0000002,0.0017836925107985735,75,768,Light L2: may help generalization
+E11,16-8-4-8-16,0.001,512,ES + L2 0.000002,0.002139141783118248,195,768,Stronger L2: may underfit
+E12,16-8-4-8-16,0.001,512,ES + Dropout 0.1,0.011429836973547935,52,768,"Dropout 0.1: small network, probably no help"
+E13,16-8-4-8-16,0.001,512,ES + Dropout 0.05,0.007459117099642754,46,768,Smaller dropout: may hurt less

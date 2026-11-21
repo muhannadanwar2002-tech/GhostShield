@@ -1,0 +1,8 @@
+{
+  "model_filename": "best_ae_time_12features.keras",
+  "validation_filename": "validation_scaled_time.parquet",
+  "method": "normal_validation_percentile",
+  "percentile": 99,
+  "threshold": 0.017968580495137495,
+  "classification_rule": "attack if reconstruction_mse > threshold"
+}
